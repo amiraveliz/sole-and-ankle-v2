@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { COLORS, WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
-import Spacer from '../Spacer';
+import { COLORS, WEIGHTS } from "../../constants";
+import { formatPrice, pluralize, isNewShoe } from "../../utils";
+import Spacer from "../Spacer";
 
 const ShoeCard = ({
   slug,
@@ -31,9 +31,17 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const variantLabel = {
+    "on-sale": <VariantLabel color={COLORS.primary}>Sale</VariantLabel>,
+    "new-release": (
+      <VariantLabel color={COLORS.secondary}>Just Released!</VariantLabel>
+    ),
+  };
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
+        {variantLabel[variant]}
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
@@ -43,33 +51,58 @@ const ShoeCard = ({
           <Price>{formatPrice(price)}</Price>
         </Row>
         <Row>
-          <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          {variant === "on-sale" && (
+            <SalePrice>{formatPrice(salePrice)}</SalePrice>
+          )}
         </Row>
       </Wrapper>
     </Link>
   );
 };
 
+const VariantLabel = styled.span`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  height: 32px;
+  background-color: ${(props) => props.color};
+  color: ${COLORS.white};
+  z-index: 1;
+  padding: 7px 9px 9px 11px;
+  border-radius: 2px;
+`;
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
+  border-radius: 16px 4px;
   position: relative;
 `;
 
-const Image = styled.img``;
+const ImageWrapper = styled.div`
+  position: relative;
+  max-width: 344px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  border-radius: 16px 16px 4px 4px;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.gray[900]};
+  display: inline;
 `;
 
 const Price = styled.span``;
