@@ -85,7 +85,7 @@ const Wrapper = styled.article`
 
 const ImageWrapper = styled.div`
   position: relative;
-  max-width: 344px;
+  /* max-width: 344px; */
 `;
 
 const Image = styled.img`
